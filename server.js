@@ -17,6 +17,16 @@ app.use(cors({
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'uploads')));
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Headers", "*")
+    res.header(
+        "Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE"
+    )
+    res.header(
+        "Access-Control-Allow-Headers", "Content-Type, x-requested-with"
+    )
+    next();
+})
 
 mongoose.connect(process.env.DB).then(() => {
     console.log('Db connection open')
