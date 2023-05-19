@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const path = require('path');
 
 const adminRoutes = require('./router/admin')
@@ -9,19 +10,13 @@ const adminRoutes = require('./router/admin')
 const app = express();
 
 dotenv.config()
+app.use(cors({
+    origin: "https://sujitkec.github.io/",
+    optionsSuccessStatus: 200
+}));
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'uploads')));
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Headers", "*")
-    res.header(
-        "Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE"
-    )
-    res.header(
-        "Access-Control-Allow-Headers", "Content-Type, x-requested-with"
-    )
-    next();
-})
 
 mongoose.connect(process.env.DB).then(() => {
     console.log('Db connection open')
